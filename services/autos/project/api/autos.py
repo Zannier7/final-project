@@ -1,10 +1,26 @@
 # services/users/project/api/users.py
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, render_template
 from project.api.models import Auto
 from project import db
 from sqlalchemy import exc
 
-autos_blueprint = Blueprint('autos', __name__)
+autos_blueprint = Blueprint('autos', __name__, template_folder='./templates')
+
+
+@autos_blueprint.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        marca = request.form['marca']
+        modelo = request.form['modelo']
+        tipo = request.form['tipo']
+        color = request.form['color']
+        placa = request.form['placa']
+        db.session.add(Auto(marca=marca, modelo=modelo,
+                            tipo=tipo, color=color, placa=placa))
+        db.session.commit()
+    autos = Auto.query.all()
+    return render_template('index.html', autos=autos)
+
 
 @autos_blueprint.route('/autos/ping', methods=['GET'])
 def ping_pong():
@@ -12,7 +28,6 @@ def ping_pong():
         'status': 'success',
         'message': 'pong!'
     })
-
 
 
 @autos_blueprint.route('/autos', methods=['POST'])
@@ -33,7 +48,8 @@ def add_autos():
     try:
         auto = Auto.query.filter_by(placa=placa).first()
         if not auto:
-            db.session.add(Auto(marca=marca, modelo=modelo, tipo=tipo, color=color, placa=placa))
+            db.session.add(Auto(marca=marca, modelo=modelo,
+                                tipo=tipo, color=color, placa=placa))
             db.session.commit()
             response_object['status'] = 'satisfactorio'
             response_object['message'] = f'{placa} a sido agregado!'
@@ -68,11 +84,12 @@ def get_single_auto(auto_id):
                     'tipo': auto.tipo,
                     'color': auto.color,
                     'placa': auto.placa
+                }
             }
-        }
         return jsonify(response_object), 200
     except ValueError:
         return jsonify(response_object), 404
+
 
 @autos_blueprint.route('/autos', methods=['GET'])
 def get_all_auto():
@@ -84,4 +101,3 @@ def get_all_auto():
         }
     }
     return jsonify(response_object), 200
-

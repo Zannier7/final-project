@@ -5,15 +5,13 @@ services:
   autos:
     build:
       context: ./services/autos
-      dockerfile: Dockerfile-dev
-    volumes:
-      - './services/autos:/usr/src/app'
-    ports:
-      - 5001:5000
+      dockerfile: Dockerfile-prod
+    expose:
+      - 5000
     environment:
-      - FLASK_ENV=development
-      - APP_SETTINGS=project.config.DevelopmentConfig
-      - DATABASE_URL=postgres://postgres:postgres@autos-db:5432/autos_dev
+      - FLASK_ENV=production
+      - APP_SETTINGS=project.config.ProductionConfig
+      - DATABASE_URL=postgres://postgres:postgres@autos-db:5432/autos_prod
       - DATABASE_TEST_URL=postgres://postgres:postgres@autos-db:5432/autos_test
     depends_on:
       - autos-db
@@ -30,9 +28,14 @@ services:
   nginx:
     build:
       context: ./services/nginx
-      dockerfile: Dockerfile-dev
+      dockerfile: Dockerfile-prod
     restart: always
     ports:
       - 80:80
     depends_on:
       - autos
+
+  dockerfile:
+    build:
+      context: ./services/autos
+      dockerfile: Dockerfile-prod

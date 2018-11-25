@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Flask on Docker</title>
+    <!-- meta -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <!-- styles -->
+    <link
+      href="//cdnjs.cloudflare.com/ajax/libs/bulma/0.7.1/css/bulma.min.css"
+      rel="stylesheet"
+    >
+         {% block css %}{% endblock %}
+  </head>
+  <body>
+    <div class="container">
+      <div class="column is-one-third">
+        <br>
+        <h1 class="title">All Autos</h1>
+        <hr><br>
+        <form action="/" method="POST">
+          <div class="field">
+            <input
+              name="marca" class="input"
+              type="text" placeholder="Ingrese marca del auto" required>
+          </div>
+          <div class="field">
+            <input
+              name="modelo" class="input"
+              type="text" placeholder="Ingrese el modelo del auto" required>
+          </div>
+          <div class="field">
+            <input
+              name="tipo" class="input"
+              type="text" placeholder="Ingrese el tipo del auto" required>
+          </div>
+          <div class="field">
+            <input
+              name="color" class="input"
+              type="text" placeholder="Ingrese color del auto" required>
+          </div>
+          <div class="field">
+            <input
+              name="placa" class="input"
+              type="text" placeholder="Ingrese la placa del auto" required>
+          </div>
+          <input
+            type="submit" class="button is-primary is-fullwidth"
+            value="Submit">
+        </form>
+        <br>
+        <hr>
+          {% if autos %}
+            <ol>
+              {% for auto in autos %}
+                <li>{{auto.marca}}</li>
+                <li>{{auto.modelo}}</li>
+                <li>{{auto.tipo}}</li>
+                <li>{{auto.color}}</li>
+                <li>{{auto.placa}}</li>
+              {% endfor %}
+            </ol>
+          {% else %}
+            <p>No autos!</p>
+          {% endif %}
+        </div>
+      </div>
+    </body>
+    </script>
+    {% block js %}{% endblock %}
+  </body>
+</html>

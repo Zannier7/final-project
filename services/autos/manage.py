@@ -1,14 +1,22 @@
-# services/users/manage.py
 import unittest
-
+import coverage
 from flask.cli import FlaskGroup
 
-from project import create_app, db #
-from project.api.models import Auto #
+from project import create_app, db   # <-- nuevo
+from project.api.models import Auto # <-- nuevo
 
-app = create_app() #
-
-cli = FlaskGroup(create_app=create_app) #
+# configurando informes de covertura con coverage 4.5.1
+COV = coverage.coverage(
+    branch=True,
+    include='project/*',
+    omit=[
+        'project/test/*',
+        'project/config.py',
+    ]
+)
+COV.start()
+app = create_app()  # <-- nuevo
+cli = FlaskGroup(create_app=create_app)  # <-- nuevo
 
 # nuevo
 @cli.command()
@@ -23,6 +31,28 @@ def test():
     tests = unittest.TestLoader().discover('project/test', pattern='test*.py')
     result = unittest.TextTestRunner(verbosity=2).run(tests)
     if result.wasSuccessful():
+        return 0
+    return 1
+
+@cli.command()
+def seed_db():
+    """Sembrado la base de datos."""
+    db.session.add(Auto(marca='bmw', modelo='ci3', tipo='deportivo', color='blanco', placa='7u456a'))
+    db.session.add(Auto(marca='audio', modelo='uik', tipo='4x4', color='negro', placa='5625as'))
+    db.session.commit()
+
+@cli.command()
+def cov():
+    """Ejecuta las pruebas unitarias con covertura."""
+    tests = unittest.TestLoader().discover('project/test')
+    result = unittest.TextTestRunner(verbosity=2).run(tests)
+    if result.wasSuccessful():
+        COV.stop()
+        COV.save()
+        print('Resumen de covertura:')
+        COV.report()
+        COV.html_report()
+        COV.erase()
         return 0
     return 1
 
