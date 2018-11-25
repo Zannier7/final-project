@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+
+  autos:
+    build:
+      context: ./services/autos
+      dockerfile: Dockerfile-dev
+    volumes:
+      - './services/autos:/usr/src/app'
+    ports:
+      - 5001:5000
+    environment:
+      - FLASK_ENV=development
+      - APP_SETTINGS=project.config.DevelopmentConfig
+      - DATABASE_URL=postgres://postgres:postgres@autos-db:5432/autos_dev
+      - DATABASE_TEST_URL=postgres://postgres:postgres@autos-db:5432/autos_test
+    depends_on:
+      - autos-db
+
+  autos-db:
+    build:
+      context: ./services/autos/project/db
+      dockerfile: Dockerfile
+    ports:
+      - 5435:5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
