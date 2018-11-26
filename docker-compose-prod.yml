@@ -34,8 +34,3 @@ services:
       - 80:80
     depends_on:
       - autos
-
-  dockerfile:
-    build:
-      context: ./services/autos
-      dockerfile: Dockerfile-prod

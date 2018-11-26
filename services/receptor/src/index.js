@@ -29,18 +29,18 @@ class App extends Component {
 render() {
     return (
         < section className = "section" >
-        < div className = "container" >
-        < div className = "columns" >
-        < div className = "column is-one-third" >
-        < br / >
-        < h1 className = "title is-1" > Todos los carros < /h1>
-        < hr / > < br / >
-        < AutosList autos = {this.state.autos}/>
-    < /div>
-    < /div>
-    < /div>
-    < /section>
-)
+            < div className = "container" >
+                < div className = "columns" >
+                    < div className = "column is-one-third" >
+                        <br/>
+                            <h1 className = "title is-1" > Todos los carros </h1>
+                        <hr/> <br/>
+                            <AutosList autos = {this.state.autos}/>
+                    </div>
+                </div>
+            </div>
+        </section>
+    )
     }
 };
 

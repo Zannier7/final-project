@@ -24,7 +24,6 @@ def create_app(script_info=None):
 
     # establece extensiones
     db.init_app(app)
-    #toolbar.init_app(app)
 
     # registra blueprints
     from project.api.autos import autos_blueprint
