@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AutosList renders a snapshot properly 1`] = `
+<div>
+  <h4
+    className="box title is-4"
+  >
+    bmw
+  </h4>
+  <h4
+    className="box title is-4"
+  >
+    audio
+  </h4>
+  <h4
+    className="box title is-4"
+  >
+    volvo
+  </h4>
+</div>
+`;
